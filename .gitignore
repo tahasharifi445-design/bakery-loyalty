@@ -1,0 +1,20 @@
+# Node
+**/node_modules/
+**/dist/
+**/.cache/
+
+# Env files
+**/.env
+**/.env.*
+
+# Logs
+**/*.log
+**/logs/
+
+# OS / editor
+.DS_Store
+
+# Never allow nested repos
+backend/.git/
+backend/**/.git/
+frontend/.git/

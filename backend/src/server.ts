@@ -3,6 +3,8 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 import dotenv from "dotenv";
+import { authRouter } from "./routes/auth.routes";
+import { connectDb } from "./db";
 
 dotenv.config();
 
@@ -17,6 +19,21 @@ app.get("/health", (_req, res) => {
   res.json({ ok: true, service: "james-bakery-loyalty-api" });
 });
 
+app.use("/v1/auth", authRouter);
+
 const port = Number(process.env.PORT ?? 4000);
-app.listen(port, () => console.log(`API running on http://localhost:${port}`));
+
+const startServer = async (): Promise<void> => {
+  try {
+    await connectDb();
+    app.listen(port, () =>
+      console.log(`API running on http://localhost:${port}`)
+    );
+  } catch (error) {
+    console.error("Failed to start server", error);
+    process.exit(1);
+  }
+};
+
+void startServer();
 

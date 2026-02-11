@@ -4,6 +4,8 @@ import helmet from "helmet";
 import morgan from "morgan";
 import dotenv from "dotenv";
 import { authRouter } from "./routes/auth.routes";
+import { customerRouter } from "./routes/customer.routes";
+import { requireAuth } from "./middleware/auth.middleware";
 import { connectDb } from "./db";
 
 dotenv.config();
@@ -20,6 +22,7 @@ app.get("/health", (_req, res) => {
 });
 
 app.use("/v1/auth", authRouter);
+app.use("/v1/customers", requireAuth, customerRouter);
 
 const port = Number(process.env.PORT ?? 4000);
 

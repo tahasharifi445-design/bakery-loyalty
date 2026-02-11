@@ -1,0 +1,132 @@
+.home-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 2rem;
+}
+
+.home-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.home-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: white;
+  margin: 0;
+}
+
+.logout-button {
+  padding: 0.875rem 2rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  background: white;
+  color: #667eea;
+  border: none;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.logout-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.logout-button:active {
+  transform: translateY(0);
+}
+
+.welcome-card {
+  background: white;
+  border-radius: 1.5rem;
+  padding: 3rem;
+  max-width: 800px;
+  margin: 0 auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.welcome-message {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+  margin: 0 0 2rem 0;
+  text-align: center;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 0.75rem;
+  font-size: 1.125rem;
+}
+
+.info-label {
+  font-weight: 600;
+  color: #666;
+}
+
+.info-value {
+  font-weight: 500;
+  color: #333;
+}
+
+.info-text {
+  font-size: 1.125rem;
+  color: #666;
+  text-align: center;
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* Tablet-friendly optimizations */
+@media (min-width: 768px) {
+  .home-header {
+    padding: 0 2rem;
+  }
+
+  .home-title {
+    font-size: 2.5rem;
+  }
+
+  .logout-button {
+    padding: 1rem 2.5rem;
+    font-size: 1.25rem;
+  }
+
+  .welcome-card {
+    padding: 4rem;
+  }
+
+  .welcome-message {
+    font-size: 2.5rem;
+  }
+
+  .info-item {
+    font-size: 1.25rem;
+    padding: 1.25rem;
+  }
+
+  .info-text {
+    font-size: 1.25rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .home-container {
+    padding: 3rem;
+  }
+}

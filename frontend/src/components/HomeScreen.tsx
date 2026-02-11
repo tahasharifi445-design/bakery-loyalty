@@ -1,7 +1,11 @@
 import { useAuth } from '../hooks/useAuth';
 import './HomeScreen.css';
 
-export const HomeScreen = () => {
+interface HomeScreenProps {
+  onNavigate: (page: string) => void;
+}
+
+export const HomeScreen = ({ onNavigate }: HomeScreenProps) => {
   const { user, logout } = useAuth();
 
   return (
@@ -25,9 +29,15 @@ export const HomeScreen = () => {
             <span className="info-value">{user?.id}</span>
           </div>
         </div>
-        <p className="info-text">
-          You are successfully authenticated! The authentication shell is working correctly.
-        </p>
+        
+        <div className="actions-section">
+          <button 
+            onClick={() => onNavigate('customer-lookup')} 
+            className="action-button"
+          >
+            Customer Lookup
+          </button>
+        </div>
       </div>
     </div>
   );

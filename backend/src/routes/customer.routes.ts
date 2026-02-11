@@ -71,7 +71,6 @@ router.post("/", async (req, res) => {
     const customer = await Customer.create({
       name: name ?? null,
       phone_number: normalizedPhone,
-      points_balance: 0,
     });
 
     return res.status(201).json({

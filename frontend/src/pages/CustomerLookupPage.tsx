@@ -22,7 +22,7 @@ export const CustomerLookupPage = ({ onNavigateBack }: CustomerLookupPageProps) 
 
   const normalizePhone = (phoneInput: string): string => {
     // Strip spaces, dashes, parentheses, and other common phone formatting
-    return phoneInput.replace(/[\s\-\(\)\+\.]/g, '');
+    return phoneInput.replace(/[\s\-()+.]/g, '');
   };
 
   const handlePhoneInput = (value: string) => {

@@ -5,6 +5,7 @@ import morgan from "morgan";
 import dotenv from "dotenv";
 import { authRouter } from "./routes/auth.routes";
 import { customerRouter } from "./routes/customer.routes";
+import { transactionRouter } from "./routes/transaction.routes";
 import { requireAuth } from "./middleware/auth.middleware";
 import { connectDb } from "./db";
 
@@ -23,6 +24,7 @@ app.get("/health", (_req, res) => {
 
 app.use("/v1/auth", authRouter);
 app.use("/v1/customers", requireAuth, customerRouter);
+app.use("/v1/transactions", requireAuth, transactionRouter);
 
 const port = Number(process.env.PORT ?? 4000);
 

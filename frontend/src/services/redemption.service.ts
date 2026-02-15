@@ -17,7 +17,8 @@ export class RedemptionService {
       throw new Error(error.error || 'Failed to fetch rewards');
     }
 
-    return response.json();
+    const data = await response.json();
+    return data.rewards || [];
   }
 
   static async redeemReward(

@@ -4,9 +4,10 @@ import './CustomerSummaryCard.css';
 interface CustomerSummaryCardProps {
   customer: Customer;
   onNavigateToPurchase?: () => void;
+  onNavigateToRedemption?: () => void;
 }
 
-export const CustomerSummaryCard = ({ customer, onNavigateToPurchase }: CustomerSummaryCardProps) => {
+export const CustomerSummaryCard = ({ customer, onNavigateToPurchase, onNavigateToRedemption }: CustomerSummaryCardProps) => {
   return (
     <div className="customer-summary-card">
       <h2 className="customer-summary-title">Customer Found</h2>
@@ -28,11 +29,18 @@ export const CustomerSummaryCard = ({ customer, onNavigateToPurchase }: Customer
         </div>
       </div>
 
-      {onNavigateToPurchase && (
+      {(onNavigateToPurchase || onNavigateToRedemption) && (
         <div className="customer-actions">
-          <button onClick={onNavigateToPurchase} className="purchase-button">
-            Record Purchase
-          </button>
+          {onNavigateToPurchase && (
+            <button onClick={onNavigateToPurchase} className="purchase-button">
+              Record Purchase
+            </button>
+          )}
+          {onNavigateToRedemption && (
+            <button onClick={onNavigateToRedemption} className="redemption-button">
+              Redeem Rewards
+            </button>
+          )}
         </div>
       )}
     </div>

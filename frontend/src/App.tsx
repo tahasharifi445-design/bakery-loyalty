@@ -4,9 +4,10 @@ import { LoginScreen } from './components/LoginScreen';
 import { HomeScreen } from './components/HomeScreen';
 import { CustomerLookupPage } from './pages/CustomerLookupPage';
 import { PurchasePage } from './pages/PurchasePage';
+import { RedemptionPage } from './pages/RedemptionPage';
 import type { Customer } from './types/customer';
 
-type Page = 'home' | 'customer-lookup' | 'purchase';
+type Page = 'home' | 'customer-lookup' | 'purchase' | 'redemption';
 
 function App() {
   const { user, isLoading } = useAuth();
@@ -16,6 +17,11 @@ function App() {
   const handleNavigateToPurchase = (customer: Customer) => {
     setSelectedCustomer(customer);
     setCurrentPage('purchase');
+  };
+
+  const handleNavigateToRedemption = (customer: Customer) => {
+    setSelectedCustomer(customer);
+    setCurrentPage('redemption');
   };
 
   const handleNavigateBack = () => {
@@ -52,11 +58,20 @@ function App() {
           onNavigateToDashboard={handleNavigateBack}
         />
       );
+    case 'redemption':
+      return (
+        <RedemptionPage 
+          selectedCustomer={selectedCustomer}
+          onNavigateBack={() => setCurrentPage('customer-lookup')}
+          onNavigateToDashboard={handleNavigateBack}
+        />
+      );
     case 'customer-lookup':
       return (
         <CustomerLookupPage 
           onNavigateBack={handleNavigateBack}
           onNavigateToPurchase={handleNavigateToPurchase}
+          onNavigateToRedemption={handleNavigateToRedemption}
         />
       );
     case 'home':

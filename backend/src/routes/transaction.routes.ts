@@ -50,8 +50,8 @@ router.post("/purchase", async (req, res) => {
         {
           customer_id: customerId,
           staff_user_id: staffUserId,
-          purchase_amount: purchaseAmount,
-          points_awarded: pointsAwarded,
+          amount: purchaseAmount,
+          points_earned: pointsAwarded,
         },
         { transaction: t }
       );

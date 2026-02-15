@@ -5,8 +5,8 @@ interface TransactionAttributes {
   id: string;
   customer_id: string;
   staff_user_id: string;
-  purchase_amount: number;
-  points_awarded: number;
+  amount: number;
+  points_earned: number;
   created_at: Date;
   updated_at: Date;
 }
@@ -23,8 +23,8 @@ export class Transaction extends Model<
   declare id: string;
   declare customer_id: string;
   declare staff_user_id: string;
-  declare purchase_amount: number;
-  declare points_awarded: number;
+  declare amount: number;
+  declare points_earned: number;
   declare created_at: Date;
   declare updated_at: Date;
 }
@@ -44,11 +44,11 @@ Transaction.init(
       type: DataTypes.UUID,
       allowNull: false,
     },
-    purchase_amount: {
+    amount: {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
     },
-    points_awarded: {
+    points_earned: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },

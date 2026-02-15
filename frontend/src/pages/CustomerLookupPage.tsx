@@ -10,9 +10,10 @@ type PageState = 'idle' | 'loading' | 'found' | 'not-found' | 'error';
 
 interface CustomerLookupPageProps {
   onNavigateBack?: () => void;
+  onNavigateToPurchase?: (customer: Customer) => void;
 }
 
-export const CustomerLookupPage = ({ onNavigateBack }: CustomerLookupPageProps) => {
+export const CustomerLookupPage = ({ onNavigateBack, onNavigateToPurchase }: CustomerLookupPageProps) => {
   const { token, logout } = useAuth();
   const [phone, setPhone] = useState('');
   const [customer, setCustomer] = useState<Customer | null>(null);
@@ -164,7 +165,10 @@ export const CustomerLookupPage = ({ onNavigateBack }: CustomerLookupPageProps) 
         </div>
 
         {pageState === 'found' && customer && (
-          <CustomerSummaryCard customer={customer} />
+          <CustomerSummaryCard 
+            customer={customer}
+            onNavigateToPurchase={onNavigateToPurchase ? () => onNavigateToPurchase(customer) : undefined}
+          />
         )}
 
         {pageState === 'not-found' && (

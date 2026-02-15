@@ -54,6 +54,36 @@
   font-weight: bold;
 }
 
+.customer-actions {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+.purchase-button {
+  padding: 1.25rem 2.5rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+  border: none;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(72, 187, 120, 0.3);
+  min-width: 250px;
+  min-height: 60px;
+}
+
+.purchase-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(72, 187, 120, 0.4);
+}
+
+.purchase-button:active {
+  transform: translateY(-1px);
+}
+
 /* Tablet-friendly optimizations */
 @media (min-width: 768px) {
   .customer-summary-card {
@@ -71,5 +101,10 @@
 
   .points-value {
     font-size: 1.75rem;
+  }
+
+  .purchase-button {
+    min-height: 70px;
+    font-size: 1.5rem;
   }
 }

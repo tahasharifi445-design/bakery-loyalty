@@ -3,12 +3,25 @@ import { useAuth } from './hooks/useAuth';
 import { LoginScreen } from './components/LoginScreen';
 import { HomeScreen } from './components/HomeScreen';
 import { CustomerLookupPage } from './pages/CustomerLookupPage';
+import { PurchasePage } from './pages/PurchasePage';
+import type { Customer } from './types/customer';
 
-type Page = 'home' | 'customer-lookup';
+type Page = 'home' | 'customer-lookup' | 'purchase';
 
 function App() {
   const { user, isLoading } = useAuth();
   const [currentPage, setCurrentPage] = useState<Page>('home');
+  const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
+
+  const handleNavigateToPurchase = (customer: Customer) => {
+    setSelectedCustomer(customer);
+    setCurrentPage('purchase');
+  };
+
+  const handleNavigateBack = () => {
+    setCurrentPage('home');
+    setSelectedCustomer(null);
+  };
 
   if (isLoading) {
     return (
@@ -31,8 +44,21 @@ function App() {
 
   // Render the current page for authenticated users
   switch (currentPage) {
+    case 'purchase':
+      return (
+        <PurchasePage 
+          selectedCustomer={selectedCustomer}
+          onNavigateBack={() => setCurrentPage('customer-lookup')}
+          onNavigateToDashboard={handleNavigateBack}
+        />
+      );
     case 'customer-lookup':
-      return <CustomerLookupPage onNavigateBack={() => setCurrentPage('home')} />;
+      return (
+        <CustomerLookupPage 
+          onNavigateBack={handleNavigateBack}
+          onNavigateToPurchase={handleNavigateToPurchase}
+        />
+      );
     case 'home':
     default:
       return <HomeScreen onNavigate={(page) => setCurrentPage(page as Page)} />;

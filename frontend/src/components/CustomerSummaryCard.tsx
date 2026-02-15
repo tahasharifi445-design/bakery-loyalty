@@ -3,9 +3,10 @@ import './CustomerSummaryCard.css';
 
 interface CustomerSummaryCardProps {
   customer: Customer;
+  onNavigateToPurchase?: () => void;
 }
 
-export const CustomerSummaryCard = ({ customer }: CustomerSummaryCardProps) => {
+export const CustomerSummaryCard = ({ customer, onNavigateToPurchase }: CustomerSummaryCardProps) => {
   return (
     <div className="customer-summary-card">
       <h2 className="customer-summary-title">Customer Found</h2>
@@ -26,6 +27,14 @@ export const CustomerSummaryCard = ({ customer }: CustomerSummaryCardProps) => {
           <span className="detail-value points-value">{customer.points_balance}</span>
         </div>
       </div>
+
+      {onNavigateToPurchase && (
+        <div className="customer-actions">
+          <button onClick={onNavigateToPurchase} className="purchase-button">
+            Record Purchase
+          </button>
+        </div>
+      )}
     </div>
   );
 };

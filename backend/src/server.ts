@@ -7,7 +7,10 @@ import { authRouter } from "./routes/auth.routes";
 import { customerRouter } from "./routes/customer.routes";
 import { transactionRouter } from "./routes/transaction.routes";
 import { redemptionRouter } from "./routes/redemption.routes";
-import { requireAuth } from "./middleware/auth.middleware";
+import { adminConfigRouter } from "./routes/admin.config.routes";
+import { adminRewardsRouter } from "./routes/admin.rewards.routes";
+import { adminStaffRouter } from "./routes/admin.staff.routes";
+import { requireAuth, requireRole } from "./middleware/auth.middleware";
 import { connectDb } from "./db";
 
 dotenv.config();
@@ -27,6 +30,9 @@ app.use("/v1/auth", authRouter);
 app.use("/v1/customers", requireAuth, customerRouter);
 app.use("/v1/transactions", requireAuth, transactionRouter);
 app.use("/v1", requireAuth, redemptionRouter);
+app.use("/v1/admin", requireAuth, requireRole(["admin"]), adminConfigRouter);
+app.use("/v1/admin", requireAuth, requireRole(["admin"]), adminRewardsRouter);
+app.use("/v1/admin", requireAuth, requireRole(["admin"]), adminStaffRouter);
 
 const port = Number(process.env.PORT ?? 4000);
 

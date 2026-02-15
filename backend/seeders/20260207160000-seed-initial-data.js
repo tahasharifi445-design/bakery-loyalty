@@ -8,6 +8,12 @@ module.exports = {
     const pinHash = await bcrypt.hash("1234", 10);
     const { Op } = Sequelize;
 
+    // Delete in order of dependencies to avoid foreign key constraint violations
+    // First delete records that reference others (child tables)
+    await queryInterface.bulkDelete("redemptions", {}, {});
+    await queryInterface.bulkDelete("transactions", {}, {});
+    
+    // Then delete parent tables
     await queryInterface.bulkDelete(
       "rewards",
       { name: { [Op.in]: ["Free Bread", "$5 Off"] } },
@@ -79,6 +85,10 @@ module.exports = {
   async down(queryInterface, Sequelize) {
     const { Op } = Sequelize;
 
+    // Delete in order of dependencies to avoid foreign key constraint violations
+    await queryInterface.bulkDelete("redemptions", {}, {});
+    await queryInterface.bulkDelete("transactions", {}, {});
+    
     await queryInterface.bulkDelete(
       "rewards",
       { name: { [Op.in]: ["Free Bread", "$5 Off"] } },

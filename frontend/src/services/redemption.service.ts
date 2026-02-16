@@ -18,7 +18,17 @@ export class RedemptionService {
     }
 
     const data = await response.json();
-    return data.rewards || [];
+    
+    // Validate response structure
+    if (!data || typeof data !== 'object') {
+      throw new Error('Invalid response format from rewards API');
+    }
+    
+    if (!Array.isArray(data.rewards)) {
+      throw new Error('Expected rewards array in API response');
+    }
+    
+    return data.rewards;
   }
 
   static async redeemReward(

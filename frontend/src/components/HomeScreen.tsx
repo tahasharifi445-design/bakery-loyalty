@@ -37,6 +37,14 @@ export const HomeScreen = ({ onNavigate }: HomeScreenProps) => {
           >
             Customer Lookup
           </button>
+          {user?.role === 'admin' && (
+            <button 
+              onClick={() => onNavigate('admin')} 
+              className="action-button admin-button"
+            >
+              Admin Panel
+            </button>
+          )}
         </div>
       </div>
     </div>

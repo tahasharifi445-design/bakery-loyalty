@@ -111,9 +111,17 @@
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
+.action-button.admin-button {
+  background: linear-gradient(135deg, #d87829 0%, #c06820 100%);
+}
+
 .action-button:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.action-button.admin-button:hover {
+  box-shadow: 0 4px 12px rgba(216, 120, 41, 0.4);
 }
 
 .action-button:active {

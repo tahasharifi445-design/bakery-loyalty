@@ -6,15 +6,26 @@ import { Redemption } from "../models/redemption.model";
 
 const router = Router();
 
-// GET /v1/rewards - List active rewards
-router.get("/rewards", async (_req, res) => {
+// GET /v1/rewards - List active rewards (or all rewards if includeInactive=true)
+router.get("/rewards", async (req, res) => {
   try {
+    const includeInactive = req.query.includeInactive === "true";
+
+    const whereClause = includeInactive ? {} : { is_active: true };
+
     const rewards = await Reward.findAll({
-      where: { is_active: true },
+      where: whereClause,
       order: [["points_cost", "ASC"]],
     });
 
-    return res.json(rewards);
+    const formattedRewards = rewards.map((r) => ({
+      id: r.id,
+      name: r.name,
+      pointsCost: r.points_cost,
+      isActive: r.is_active,
+    }));
+
+    return res.json({ rewards: formattedRewards });
   } catch (error) {
     console.error("Failed to fetch rewards", error);
     return res.status(500).json({ error: "Unexpected error" });

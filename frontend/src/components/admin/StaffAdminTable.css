@@ -1,0 +1,134 @@
+.staff-admin-table {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.staff-admin-table h2 {
+  margin: 0 0 1.5rem 0;
+  color: #333;
+  font-size: 1.5rem;
+}
+
+.staff-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.staff-table th {
+  background-color: #f5f5f5;
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: #555;
+  border-bottom: 2px solid #ddd;
+}
+
+.staff-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.staff-table tbody tr:hover {
+  background-color: #fafafa;
+}
+
+.name-cell {
+  font-weight: 600;
+  color: #333;
+}
+
+.date-cell {
+  color: #666;
+  font-size: 0.875rem;
+}
+
+.no-data {
+  text-align: center;
+  color: #999;
+  padding: 2rem !important;
+}
+
+.role-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  display: inline-block;
+  text-transform: capitalize;
+}
+
+.role-badge.admin {
+  background-color: #e3f2fd;
+  color: #1976d2;
+}
+
+.role-badge.staff {
+  background-color: #f3e5f5;
+  color: #7b1fa2;
+}
+
+.status-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.status-badge.active {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status-badge.inactive {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.action-button {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.action-button:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.action-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  opacity: 1;
+}
+
+.action-button.success {
+  background-color: #4caf50;
+}
+
+.action-button.success:hover:not(:disabled) {
+  background-color: #45a049;
+}
+
+.action-button.danger {
+  background-color: #f44336;
+}
+
+.action-button.danger:hover:not(:disabled) {
+  background-color: #da190b;
+}
+
+.error-message {
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  background-color: #fee;
+  border: 1px solid #fcc;
+  border-radius: 4px;
+  color: #c33;
+}

@@ -231,7 +231,7 @@ export const RedemptionPage = ({
             <h2>Confirm Redemption</h2>
             <p>
               Are you sure you want to redeem <strong>{selectedReward.name}</strong> for{' '}
-              <strong>{selectedReward.points_cost} points</strong>?
+              <strong>{selectedReward.pointsCost} points</strong>?
             </p>
             <div className="modal-actions">
               <button onClick={handleConfirmRedeem} className="action-button primary">

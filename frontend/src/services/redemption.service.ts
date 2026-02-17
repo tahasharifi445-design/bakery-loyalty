@@ -17,7 +17,18 @@ export class RedemptionService {
       throw new Error(error.error || 'Failed to fetch rewards');
     }
 
-    return response.json();
+    const data = await response.json();
+    
+    // Validate response structure
+    if (!data || typeof data !== 'object') {
+      throw new Error('Invalid response format from rewards API');
+    }
+    
+    if (!Array.isArray(data.rewards)) {
+      throw new Error('Expected rewards array in API response');
+    }
+    
+    return data.rewards;
   }
 
   static async redeemReward(

@@ -14,7 +14,7 @@ export const RewardCard = ({
   onRedeem, 
   isLoading = false 
 }: RewardCardProps) => {
-  const canAfford = customerBalance >= reward.points_cost;
+  const canAfford = customerBalance >= reward.pointsCost;
 
   return (
     <div className={`reward-card ${!canAfford ? 'disabled' : ''}`}>
@@ -22,7 +22,7 @@ export const RewardCard = ({
         <h3 className="reward-name">{reward.name}</h3>
         <div className="reward-cost">
           <span className="cost-label">Cost:</span>
-          <span className="cost-value">{reward.points_cost} points</span>
+          <span className="cost-value">{reward.pointsCost} points</span>
         </div>
       </div>
       

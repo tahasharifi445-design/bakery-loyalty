@@ -5,9 +5,10 @@ import { HomeScreen } from './components/HomeScreen';
 import { CustomerLookupPage } from './pages/CustomerLookupPage';
 import { PurchasePage } from './pages/PurchasePage';
 import { RedemptionPage } from './pages/RedemptionPage';
+import { AdminDashboardPage } from './pages/admin/AdminDashboardPage';
 import type { Customer } from './types/customer';
 
-type Page = 'home' | 'customer-lookup' | 'purchase' | 'redemption';
+type Page = 'home' | 'customer-lookup' | 'purchase' | 'redemption' | 'admin';
 
 function App() {
   const { user, isLoading } = useAuth();
@@ -50,6 +51,12 @@ function App() {
 
   // Render the current page for authenticated users
   switch (currentPage) {
+    case 'admin':
+      return (
+        <AdminDashboardPage 
+          onNavigateBack={handleNavigateBack}
+        />
+      );
     case 'purchase':
       return (
         <PurchasePage 

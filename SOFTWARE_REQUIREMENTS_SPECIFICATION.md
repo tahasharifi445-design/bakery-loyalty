@@ -3,7 +3,7 @@
 
 **Version:** 1.0  
 **Date:** February 17, 2026  
-**Status:** Retrospective Documentation
+**Status:** Planned Requirements
 
 ---
 
@@ -11,22 +11,22 @@
 
 ### 1.1 Purpose
 
-This Software Requirements Specification (SRS) document provides a comprehensive description of the implemented functionality within the Bakery Loyalty Management System. This document has been generated retrospectively from the existing codebase to formally capture all requirements that have been realized in the system as deployed.
+This Software Requirements Specification (SRS) document provides a comprehensive description of the planned functionality for the Bakery Loyalty Management System. This document defines all requirements that shall be implemented in the system.
 
-The document serves as the authoritative reference for understanding system capabilities, constraints, and behavior based on actual implementation rather than planned features.
+The document serves as the authoritative reference for understanding system requirements, specifications, and expected behavior that the development team will implement.
 
 ### 1.2 Scope
 
-The Bakery Loyalty Management System is a point-of-sale integrated loyalty program management application designed to enable bakery staff to:
+The Bakery Loyalty Management System will be a point-of-sale integrated loyalty program management application designed to enable bakery staff to:
 
 - Register and track customer loyalty accounts
 - Record customer purchases and automatically calculate loyalty points
 - Enable customers to redeem accumulated points for rewards
 - Provide administrative controls for loyalty program configuration
 
-The system consists of a REST API backend service and a web-based frontend interface. The system tracks customer purchase history, maintains point balances, manages a configurable rewards catalog, and provides role-based access control for staff and administrative users.
+The system will consist of a REST API backend service and a web-based frontend interface. The system will track customer purchase history, maintain point balances, manage a configurable rewards catalog, and provide role-based access control for staff and administrative users.
 
-**What the system does:**
+**Planned system capabilities:**
 - Customer account management (creation and lookup)
 - Purchase transaction processing with automatic points calculation
 - Reward redemption processing with balance verification
@@ -35,7 +35,7 @@ The system consists of a REST API backend service and a web-based frontend inter
 - Staff user management (viewing and activation/deactivation)
 - Authentication and role-based authorization
 
-**What the system does not do:**
+**Out of scope for this release:**
 - Customer self-service portal
 - Email or SMS notifications
 - Reporting or analytics dashboards
@@ -48,11 +48,11 @@ The system consists of a REST API backend service and a web-based frontend inter
 
 This document is intended for:
 
-- **Academic Evaluators:** University instructors and teaching assistants assessing software engineering coursework
-- **Development Team Members:** Current and future developers maintaining or extending the system
-- **Quality Assurance Personnel:** Testers validating system behavior against documented requirements
-- **Project Stakeholders:** Business owners and product managers understanding implemented capabilities
-- **System Auditors:** Compliance and security reviewers examining system behavior
+- **Development Team:** Software engineers who will implement the system
+- **Quality Assurance Personnel:** Testers who will validate system behavior against requirements
+- **Project Stakeholders:** Business owners and product managers who need to understand planned capabilities
+- **Academic Evaluators:** University instructors and teaching assistants assessing software engineering requirements analysis
+- **System Designers:** Architects planning the technical implementation approach
 
 ---
 
@@ -61,7 +61,7 @@ This document is intended for:
 ### 2.1 Primary Stakeholders
 
 **Bakery Staff Users**
-- Role: Front-line operators who interact with customers
+- Role: Front-line operators who will interact with customers
 - Needs: Fast customer lookup, simple transaction recording, reward redemption processing
 - Access Level: Standard authenticated access to core transactional features
 
@@ -75,15 +75,15 @@ This document is intended for:
 **Bakery Customers**
 - Role: Loyalty program participants
 - Interaction: Indirect (through staff-mediated transactions)
-- Benefit: Earn and redeem loyalty points for rewards
+- Benefit: Will earn and redeem loyalty points for rewards
 
 **Development Team**
 - Role: System implementers and maintainers
-- Needs: Clear understanding of implemented requirements for maintenance and debugging
+- Needs: Clear requirements specification for implementation
 
 **Business Owner**
 - Role: Strategic decision maker
-- Needs: Understanding of system capabilities and limitations
+- Needs: Understanding of planned system capabilities to meet business objectives
 
 ---
 
@@ -91,7 +91,7 @@ This document is intended for:
 
 ### 3.1 In-Scope Functionality
 
-The following capabilities are implemented and available within the system:
+The following capabilities will be implemented in the system:
 
 **Customer Management:**
 - Customer account creation with phone number identification
@@ -135,7 +135,7 @@ The following capabilities are implemented and available within the system:
 
 ### 3.2 Out-of-Scope Functionality
 
-The following capabilities are explicitly **not implemented** in the current system:
+The following capabilities are explicitly **not planned** for implementation in this release:
 
 **Customer Self-Service:**
 - Customer-facing mobile or web application
@@ -741,125 +741,127 @@ The following capabilities are explicitly **not implemented** in the current sys
 
 ## 9. Requirements Traceability Matrix
 
+This section maps each functional requirement to the planned implementation modules and verification approach. This matrix will be used during development to ensure all requirements are properly implemented and tested.
+
 ### 9.1 Authentication & Authorization (FR-1 to FR-9)
 
-| Requirement | Implementation Location | Verification Method |
-|------------|------------------------|---------------------|
-| FR-1 | `backend/src/routes/auth.routes.ts` (lines 15-45) | Login endpoint validates name and PIN |
-| FR-2 | `backend/seeders/20260207160000-seed-initial-data.js` (line 8) | bcrypt.hash() used with cost 10 |
-| FR-3 | `backend/src/routes/auth.routes.ts` (line 42) | JWT payload includes sub, role, name |
-| FR-4 | `backend/src/middleware/auth.middleware.ts` (lines 8-42) | requireAuth middleware validates Bearer tokens |
-| FR-5 | `backend/src/routes/auth.routes.ts` (line 28) | Login checks is_active status |
-| FR-6 | `backend/src/routes/auth.routes.ts` (lines 17-19) | PIN regex validation `/^\d{4,10}$/` |
-| FR-7 | `backend/src/routes/auth.routes.ts` (lines 49-64) | GET /v1/auth/me endpoint |
-| FR-8 | `backend/src/middleware/auth.middleware.ts` (lines 44-51) | requireRole middleware enforces admin access |
-| FR-9 | `backend/src/server.ts` (lines 23-27) | Middleware applied to transaction/redemption routes |
+| Requirement | Planned Module | Verification Method |
+|------------|----------------|---------------------|
+| FR-1 | Authentication routes module | Verify login endpoint validates name and PIN |
+| FR-2 | User credential storage | Verify bcrypt hashing with cost factor 10 |
+| FR-3 | Authentication routes module | Verify JWT payload contains sub, role, name |
+| FR-4 | Authentication middleware | Verify Bearer token validation on protected endpoints |
+| FR-5 | Authentication routes module | Verify inactive users cannot authenticate |
+| FR-6 | Authentication routes module | Verify PIN regex validation `/^\d{4,10}$/` |
+| FR-7 | Authentication routes module | Verify GET /v1/auth/me endpoint returns user info |
+| FR-8 | Authorization middleware | Verify requireRole middleware enforces admin access |
+| FR-9 | Main server configuration | Verify middleware applied to transaction/redemption routes |
 
 ### 9.2 Customer Management (FR-10 to FR-18)
 
-| Requirement | Implementation Location | Verification Method |
-|------------|------------------------|---------------------|
-| FR-10 | `backend/src/routes/customer.routes.ts` (lines 9-42) | POST /v1/customers endpoint |
-| FR-11 | `backend/migrations/20260207142745-create-customers.js` (line 8) | UUID default value gen_random_uuid() |
-| FR-12 | `backend/migrations/20260207142745-create-customers.js` (line 11) | phone_number unique constraint |
-| FR-13 | `backend/src/utils/phone.ts` (lines 1-3) | normalizePhoneNumber function |
-| FR-14 | `backend/src/routes/customer.routes.ts` (lines 52-54) | Phone length validation |
-| FR-15 | `backend/migrations/20260211104900-add-points-balance-to-customers.js` (line 8) | points_balance default 0 |
-| FR-16 | `backend/src/routes/customer.routes.ts` (lines 46-76) | POST /v1/customers/lookup endpoint |
-| FR-17 | `backend/src/routes/customer.routes.ts` (lines 68-73) | Response includes name, phone, points |
-| FR-18 | `backend/src/routes/customer.routes.ts` (lines 38-39) | Catches SequelizeUniqueConstraintError |
+| Requirement | Planned Module | Verification Method |
+|------------|----------------|---------------------|
+| FR-10 | Customer routes module | Verify POST /v1/customers endpoint creates customer |
+| FR-11 | Database schema | Verify UUID primary keys generated automatically |
+| FR-12 | Database schema | Verify phone_number unique constraint enforced |
+| FR-13 | Phone utility module | Verify normalizePhoneNumber removes non-digits |
+| FR-14 | Customer routes module | Verify phone length validation (10-15 chars) |
+| FR-15 | Database schema | Verify points_balance defaults to 0 |
+| FR-16 | Customer routes module | Verify POST /v1/customers/lookup finds by phone |
+| FR-17 | Customer routes module | Verify response includes name, phone, points |
+| FR-18 | Customer routes module | Verify 409 error on duplicate phone number |
 
 ### 9.3 Purchase Transactions (FR-19 to FR-28)
 
-| Requirement | Implementation Location | Verification Method |
-|------------|------------------------|---------------------|
-| FR-19 | `backend/src/routes/transaction.routes.ts` (lines 49-57) | Transaction.create with all fields |
-| FR-20 | `backend/src/routes/transaction.routes.ts` (lines 19-21) | Purchase amount validation > 0 |
-| FR-21 | `backend/src/routes/transaction.routes.ts` (lines 38-41) | LoyaltyConfig.findOne() |
-| FR-22 | `backend/src/routes/transaction.routes.ts` (line 46) | Math.floor(amount * earnRate) |
-| FR-23 | `backend/src/routes/transaction.routes.ts` (line 54) | points_earned field in create |
-| FR-24 | `backend/src/routes/transaction.routes.ts` (lines 59-61) | customer.update points_balance |
-| FR-25 | `backend/src/routes/transaction.routes.ts` (line 30) | sequelize.transaction wrapper |
-| FR-26 | `backend/migrations/20260207142747-create-transactions.js` (line 15) | ON DELETE RESTRICT |
-| FR-27 | `backend/migrations/20260207142747-create-transactions.js` (line 22) | ON DELETE RESTRICT |
-| FR-28 | `backend/src/routes/transaction.routes.ts` (lines 63-67) | Return object structure |
+| Requirement | Planned Module | Verification Method |
+|------------|----------------|---------------------|
+| FR-19 | Transaction routes module | Verify transaction record includes all required fields |
+| FR-20 | Transaction routes module | Verify purchase amount validation rejects <= 0 |
+| FR-21 | Transaction routes module | Verify system retrieves current earn rate before calculation |
+| FR-22 | Transaction routes module | Verify Math.floor(amount * earnRate) calculation |
+| FR-23 | Transaction routes module | Verify points_earned stored in transaction record |
+| FR-24 | Transaction routes module | Verify customer points_balance atomically incremented |
+| FR-25 | Transaction routes module | Verify database transaction wrapper ensures atomicity |
+| FR-26 | Database schema | Verify foreign key ON DELETE RESTRICT for customer_id |
+| FR-27 | Database schema | Verify foreign key ON DELETE RESTRICT for staff_user_id |
+| FR-28 | Transaction routes module | Verify response includes transactionId, pointsAwarded, newBalance |
 
 ### 9.4 Reward Management (FR-29 to FR-38)
 
-| Requirement | Implementation Location | Verification Method |
-|------------|------------------------|---------------------|
-| FR-29 | `backend/migrations/20260207142747-create-rewards.js` (lines 11-13) | Reward schema definition |
-| FR-30 | `backend/migrations/20260207142747-create-rewards.js` (line 11) | String[120] type limit |
-| FR-31 | `backend/src/routes/admin.rewards.routes.ts` (lines 14-16) | Points cost validation |
-| FR-32 | `backend/src/routes/admin.rewards.routes.ts` (lines 9-29) | POST /v1/admin/rewards |
-| FR-33 | `backend/migrations/20260207142747-create-rewards.js` (line 13) | is_active default true |
-| FR-34 | `backend/src/routes/admin.rewards.routes.ts` (lines 33-68) | PUT /v1/admin/rewards/:id |
-| FR-35 | `backend/src/routes/admin.rewards.routes.ts` (lines 72-90) | PATCH /v1/admin/rewards/:id/active |
-| FR-36 | `backend/src/routes/redemption.routes.ts` (line 14) | Default where is_active: true |
-| FR-37 | `backend/src/routes/redemption.routes.ts` (line 12) | includeInactive query parameter |
-| FR-38 | `backend/src/routes/redemption.routes.ts` (line 18) | order by points_cost ASC |
+| Requirement | Planned Module | Verification Method |
+|------------|----------------|---------------------|
+| FR-29 | Database schema | Verify rewards table has name, points_cost, is_active |
+| FR-30 | Database schema | Verify name field limited to 120 characters |
+| FR-31 | Admin rewards routes | Verify points cost validation rejects non-positive values |
+| FR-32 | Admin rewards routes | Verify POST /v1/admin/rewards creates reward |
+| FR-33 | Database schema | Verify is_active defaults to true |
+| FR-34 | Admin rewards routes | Verify PUT /v1/admin/rewards/:id updates reward |
+| FR-35 | Admin rewards routes | Verify PATCH /v1/admin/rewards/:id/active toggles status |
+| FR-36 | Redemption routes module | Verify default query returns only active rewards |
+| FR-37 | Redemption routes module | Verify includeInactive parameter includes all rewards |
+| FR-38 | Redemption routes module | Verify rewards ordered by points_cost ascending |
 
 ### 9.5 Reward Redemption (FR-39 to FR-50)
 
-| Requirement | Implementation Location | Verification Method |
-|------------|------------------------|---------------------|
-| FR-39 | `backend/src/routes/redemption.routes.ts` (line 38) | Request body destructuring |
-| FR-40 | `backend/src/routes/redemption.routes.ts` (lines 54-57) | Customer.findByPk validation |
-| FR-41 | `backend/src/routes/redemption.routes.ts` (lines 60-63) | Reward.findByPk validation |
-| FR-42 | `backend/src/routes/redemption.routes.ts` (lines 66-68) | Balance comparison check |
-| FR-43 | `backend/src/routes/redemption.routes.ts` (lines 104-106) | 409 error for insufficient points |
-| FR-44 | `backend/src/routes/redemption.routes.ts` (lines 71-79) | Redemption.create |
-| FR-45 | `backend/src/routes/redemption.routes.ts` (lines 82-83) | customer.update with deduction |
-| FR-46 | `backend/src/routes/redemption.routes.ts` (line 52) | sequelize.transaction wrapper |
-| FR-47 | `backend/migrations/20260207142748-create-redemptions.js` (line 15) | ON DELETE RESTRICT |
-| FR-48 | `backend/migrations/20260207142748-create-redemptions.js` (line 29) | ON DELETE RESTRICT |
-| FR-49 | `backend/migrations/20260207142748-create-redemptions.js` (line 22) | ON DELETE RESTRICT |
-| FR-50 | `backend/src/routes/redemption.routes.ts` (lines 85-89) | Return object structure |
+| Requirement | Planned Module | Verification Method |
+|------------|----------------|---------------------|
+| FR-39 | Redemption routes module | Verify endpoint accepts customerId and rewardId |
+| FR-40 | Redemption routes module | Verify customer existence validated before redemption |
+| FR-41 | Redemption routes module | Verify reward existence validated before redemption |
+| FR-42 | Redemption routes module | Verify sufficient points balance checked |
+| FR-43 | Redemption routes module | Verify 409 error returned for insufficient points |
+| FR-44 | Redemption routes module | Verify redemption record created with all fields |
+| FR-45 | Redemption routes module | Verify customer points_balance atomically decremented |
+| FR-46 | Redemption routes module | Verify database transaction wrapper ensures atomicity |
+| FR-47 | Database schema | Verify foreign key ON DELETE RESTRICT for customer_id |
+| FR-48 | Database schema | Verify foreign key ON DELETE RESTRICT for reward_id |
+| FR-49 | Database schema | Verify foreign key ON DELETE RESTRICT for staff_user_id |
+| FR-50 | Redemption routes module | Verify response includes redemptionId, pointsDeducted, newBalance |
 
 ### 9.6 Loyalty Configuration (FR-51 to FR-57)
 
-| Requirement | Implementation Location | Verification Method |
-|------------|------------------------|---------------------|
-| FR-51 | `backend/migrations/20260207142746-create-loyalty-config.js` | Single-record design pattern |
-| FR-52 | `backend/migrations/20260207142746-create-loyalty-config.js` (line 7) | earn_rate field definition |
-| FR-53 | `backend/migrations/20260207142746-create-loyalty-config.js` (line 7) | Default value 1.0 |
-| FR-54 | `backend/src/routes/admin.config.routes.ts` (lines 8-23) | GET /v1/admin/config |
-| FR-55 | `backend/src/routes/admin.config.routes.ts` (lines 27-60) | PUT /v1/admin/config |
-| FR-56 | `backend/src/routes/admin.config.routes.ts` (lines 34-38) | Validation 0 < rate <= 1000 |
-| FR-57 | `backend/src/routes/transaction.routes.ts` (lines 38-41) | Reads config on each transaction |
+| Requirement | Planned Module | Verification Method |
+|------------|----------------|---------------------|
+| FR-51 | Database schema | Verify single loyalty_config record design |
+| FR-52 | Database schema | Verify earn_rate field exists with appropriate precision |
+| FR-53 | Database schema | Verify earn_rate defaults to 1.0 |
+| FR-54 | Admin config routes | Verify GET /v1/admin/config returns earn rate |
+| FR-55 | Admin config routes | Verify PUT /v1/admin/config updates earn rate |
+| FR-56 | Admin config routes | Verify validation: 0 < rate <= 1000 |
+| FR-57 | Transaction routes module | Verify config read on each transaction for current rate |
 
 ### 9.7 Staff User Management (FR-58 to FR-61)
 
-| Requirement | Implementation Location | Verification Method |
-|------------|------------------------|---------------------|
-| FR-58 | `backend/src/routes/admin.staff.routes.ts` (lines 8-25) | GET /v1/admin/staff |
-| FR-59 | `backend/src/routes/admin.staff.routes.ts` (lines 17-22) | Response format with fields |
-| FR-60 | `backend/src/routes/admin.staff.routes.ts` (lines 29-53) | PATCH /v1/admin/staff/:id/active |
-| FR-61 | `backend/src/routes/auth.routes.ts` (lines 26-30) | is_active check in login |
+| Requirement | Planned Module | Verification Method |
+|------------|----------------|---------------------|
+| FR-58 | Admin staff routes | Verify GET /v1/admin/staff lists all staff users |
+| FR-59 | Admin staff routes | Verify response includes name, role, is_active |
+| FR-60 | Admin staff routes | Verify PATCH /v1/admin/staff/:id/active toggles status |
+| FR-61 | Authentication routes module | Verify is_active check blocks inactive users from login |
 
 ### 9.8 Frontend User Interface (FR-62 to FR-80)
 
-| Requirement | Implementation Location | Verification Method |
-|------------|------------------------|---------------------|
-| FR-62 | `frontend/src/components/LoginScreen.tsx` | Login form component |
-| FR-63 | `frontend/src/components/HomeScreen.tsx` | Dashboard display |
-| FR-64 | `frontend/src/components/HomeScreen.tsx` | Navigation buttons |
-| FR-65 | `frontend/src/components/CustomerLookupPage.tsx` | Inline customer creation |
-| FR-66 | `frontend/src/components/CustomerLookupPage.tsx` | Points balance display |
-| FR-67 | `frontend/src/components/CustomerLookupPage.tsx` | Action buttons |
-| FR-68 | `frontend/src/components/PurchasePage.tsx` | Amount input field |
-| FR-69 | `frontend/src/components/PurchasePage.tsx` | Success message display |
-| FR-70 | `frontend/src/components/RedemptionPage.tsx` | Rewards list display |
-| FR-71 | `frontend/src/components/RedemptionPage.tsx` | Confirmation modal |
-| FR-72 | `frontend/src/components/RedemptionPage.tsx` | Success feedback |
-| FR-73 | `frontend/src/components/HomeScreen.tsx` | Conditional admin button |
-| FR-74 | `frontend/src/components/AdminDashboard.tsx` | Tab navigation |
-| FR-75 | Various components | Loading state variables |
-| FR-76 | Various components | Disabled attribute on inputs |
-| FR-77 | Various components | Error state display |
-| FR-78 | `frontend/src/context/AuthContext.tsx` | Logout on 401 responses |
-| FR-79 | `frontend/src/context/AuthContext.tsx` | localStorage token storage |
-| FR-80 | `frontend/src/context/AuthContext.tsx` | useEffect token validation |
+| Requirement | Planned Module | Verification Method |
+|------------|----------------|---------------------|
+| FR-62 | Login screen component | Verify login form with name and PIN inputs |
+| FR-63 | Home screen component | Verify dashboard shows user name, role, ID |
+| FR-64 | Home screen component | Verify navigation to customer lookup |
+| FR-65 | Customer lookup component | Verify inline customer creation when not found |
+| FR-66 | Customer lookup component | Verify points balance displayed after lookup |
+| FR-67 | Customer lookup component | Verify purchase and redemption action buttons |
+| FR-68 | Purchase page component | Verify decimal amount input with 2 decimal places |
+| FR-69 | Purchase page component | Verify success message shows points awarded and new balance |
+| FR-70 | Redemption page component | Verify active rewards list with names and costs |
+| FR-71 | Redemption page component | Verify confirmation modal before redemption |
+| FR-72 | Redemption page component | Verify success shows points deducted and new balance |
+| FR-73 | Home screen component | Verify admin panel button only for admin role |
+| FR-74 | Admin dashboard component | Verify tabs for config, rewards, staff |
+| FR-75 | All async components | Verify loading states during API calls |
+| FR-76 | All form components | Verify inputs disabled during loading |
+| FR-77 | All components with API calls | Verify error messages displayed on failures |
+| FR-78 | Authentication context | Verify automatic logout on 401 errors |
+| FR-79 | Authentication context | Verify token persisted in localStorage |
+| FR-80 | Authentication context | Verify token validation on app initialization |
 
 ---
 
@@ -867,7 +869,7 @@ The following capabilities are explicitly **not implemented** in the current sys
 
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|
-| 1.0 | February 17, 2026 | Automated SRS Generator | Initial retrospective documentation from implemented codebase |
+| 1.0 | February 17, 2026 | Requirements Analyst | Initial planned requirements specification |
 
 ---
 
@@ -887,25 +889,30 @@ The following capabilities are explicitly **not implemented** in the current sys
 
 **RESTRICT (Foreign Key Constraint):** A referential action that prevents deletion of a parent record if dependent child records exist.
 
-**Sequelize:** A promise-based Node.js ORM for PostgreSQL, MySQL, MariaDB, SQLite, and Microsoft SQL Server.
-
 **UUID (Universally Unique Identifier):** A 128-bit identifier that is globally unique without requiring a central registration authority.
 
 ---
 
-## Appendix C: References
+## Appendix C: Planned System Architecture
 
-This document was generated retrospectively from the actual implementation in the repository. The primary source of truth for all requirements is the implemented codebase located at:
+This requirements specification defines the intended functionality for the Bakery Loyalty Management System. The system will be implemented using the following architectural approach:
 
 **Repository:** tahasharifi445-design/bakery-loyalty
 
-**Key Implementation Files:**
-- Backend API: `/backend/src/routes/*.routes.ts`
-- Database Models: `/backend/src/models/*.model.ts`
-- Database Migrations: `/backend/migrations/*.js`
-- Authentication Middleware: `/backend/src/middleware/auth.middleware.ts`
-- Frontend Components: `/frontend/src/components/*.tsx`
-- Frontend Services: `/frontend/src/services/*.ts`
+**Planned Module Structure:**
+- Backend API: REST endpoints in route modules
+- Database Models: ORM entity definitions
+- Database Migrations: Schema version control
+- Authentication Middleware: JWT validation and role enforcement
+- Frontend Components: React-based user interface
+- Frontend Services: API client layer
+
+**Technology Stack:**
+- Backend: Node.js with TypeScript
+- Database: PostgreSQL with UUID support
+- Frontend: React with TypeScript
+- Authentication: JWT with bcrypt password hashing
+- API Communication: RESTful JSON over HTTPS
 
 ---
 

@@ -699,7 +699,7 @@ The following capabilities are explicitly **not planned** for implementation in 
 
 **C-3:** The frontend is constrained to use React with TypeScript and Vite build tooling.
 
-**C-4:** The system is constrained to use Sequelize ORM for database access.
+**C-4:** The system shall use an ORM (Object-Relational Mapping) framework for database access.
 
 **C-5:** The system is constrained to REST API communication pattern using JSON payloads.
 

@@ -4,6 +4,8 @@ The James Bakery Digital Loyalty System is a full-stack web application that dig
 
 Beyond functional delivery, the project emphasizes operational simplicity: a single Dockerized Postgres instance, environment-driven configuration, and minimized dependencies to respect the bakery’s resource constraints. The system can be stood up with a handful of commands, allowing staff to experience measurable improvements—faster lookups, consistent point balances, and auditable reward usage—without additional hardware. The report that follows captures not only what was built but also the rationale for design choices, observed trade-offs, and a roadmap for graduating the MVP into a production-grade service.
 
+Pilot-ready targets include sub-2-second customer lookup (with a valid JWT already established) on a typical POS connection, end-to-end purchase capture in under five clicks, and auditable point movements via transaction/redemption records that capture staff IDs.
+
 ## 2. Project Origin & Stakeholder Context
 
 ### 2.1 Business Background
@@ -65,6 +67,15 @@ Issues and PRs were scoped to single concerns (e.g., “add redemption flow”) 
 ### 4.5 Risk Mitigation
 Transactional safeguards were applied to earning and redemption, input validation was enforced on all routes, and JWT expiration defaults to 12h with required secrets. Migrations include rollback scripts to minimize deployment risk.
 
+**Risk/Mitigation Snapshot**
+
+| Risk | Likelihood | Impact | Mitigation |
+| --- | --- | --- | --- |
+| Duplicate or invalid customer records | Medium | Medium | Enforce `normalizePhone`, unique phone constraint, and 400s on bad input |
+| Balance corruption during purchase/redemption | Low | High | Wrap in Sequelize transactions; foreign keys and atomic balance updates |
+| Credential misuse | Medium | High | Bcrypt PIN hashing, JWT expiry, role checks, HTTPS + CORS configuration |
+| Migration/seeding errors | Low | Medium | Reversible migrations, dedicated seed script, rollback commands documented |
+
 ### 4.6 Definition of Done
 A story was considered done when: code compiled, API route validated manually or via frontend, database migrations applied successfully, and UI states handled errors and loading. For this final iteration, both backend and frontend builds succeeded locally. Documentation updates—including this capstone report—are treated as deliverables tied to the same Definition of Done to keep knowledge current with the codebase.
 
@@ -88,6 +99,14 @@ Single store, single tenant; no multi-location aggregation, no customer self-ser
 
 ### 5.5 Traceability Alignment
 Each requirement maps to implemented routes: authentication (`/v1/auth/login`, `/v1/auth/me`), customer operations (`/v1/customers`, `/v1/customers/lookup`), earning (`/v1/transactions/purchase`), redemption (`/v1/rewards`, `/v1/redemptions`), admin config and rewards (`/v1/admin/config`, `/v1/admin/rewards*`), and staff management (`/v1/admin/staff*`). Frontend screens directly consume these endpoints through `AuthService`, `CustomerService`, `TransactionService`, `RedemptionService`, and `AdminService`.
+
+| Requirement | Endpoint(s) | UI Surface |
+| --- | --- | --- |
+| Staff authentication and identity | `POST /v1/auth/login`, `GET /v1/auth/me` | LoginScreen, AuthContext bootstrap |
+| Customer lookup and creation | `POST /v1/customers/lookup`, `POST /v1/customers` | CustomerLookupPage, CreateCustomerModal |
+| Purchase earning with configured rate | `POST /v1/transactions/purchase` | PurchasePage |
+| Reward listing and redemption | `GET /v1/rewards`, `POST /v1/redemptions` | RedemptionPage, RewardList/RewardCard |
+| Admin configuration and control | `GET/PUT /v1/admin/config`, `POST/PUT/PATCH /v1/admin/rewards*`, `GET/PATCH /v1/admin/staff*` | AdminDashboardPage (ConfigPanel, RewardsAdminTable, StaffAdminTable) |
 
 ## 6. System Analysis
 
@@ -177,7 +196,7 @@ Ensuring atomic updates to points balances required wrapping purchase and redemp
 Earn-rate retrieval was centralized in `LoyaltyConfig` with a single-row pattern. Reward activation toggles were extracted as dedicated endpoints to avoid overloading update routes. Client code was organized into service classes per domain to isolate fetch logic.
 
 ### 8.4 Migration and Seeding
-Migrations live in `backend/migrations` and include enabling `pgcrypto`, creating tables, adding `points_balance`, and indexing history tables. Seed script `20260207160000-seed-initial-data.js` resets dependent data, inserts default earn rate, admin user, and two rewards. Commands: `npm run db:migrate`, `npm run db:migrate:undo`, `npm run db:seed`, `npm run db:seed:undo:all`.
+Migrations live in `backend/migrations` and include enabling `pgcrypto`, creating tables, adding `points_balance`, and indexing history tables (e.g., `20260207142745-enable-pgcrypto.js`, `20260207142746-create-staff-users.js`, `20260207142747-create-transactions.js`, `20260211104900-add-points-balance-to-customers.js`). Seed script `20260207160000-seed-initial-data.js` resets dependent data, inserts default earn rate, admin user, and two rewards. Commands: `npm run db:migrate`, `npm run db:migrate:undo`, `npm run db:seed`, `npm run db:seed:undo:all`.
 
 ### 8.5 Environment Configuration
 Backend expects `DATABASE_URL`, `JWT_SECRET`, optional `JWT_EXPIRES_IN` (default 12h), `PORT` (default 4000), and `CORS_ORIGIN`. Frontend uses `/v1` relative API base and relies on the browser’s origin to reach the API; configure reverse proxy accordingly.
@@ -231,13 +250,21 @@ Use `npm run db:migrate:undo` for the latest migration or `npm run db:migrate:un
 ### 10.4 Operational Risks
 Risks include token theft if served over HTTP, misconfigured CORS allowing unwanted origins, and inconsistent data if migrations are skipped. Mitigate with HTTPS, explicit CORS origins, backups of the `pgdata` volume, and staging migrations before production. Because there is no background job processor, long-running tasks should be avoided in request handlers; operators should monitor Postgres disk growth from transaction history and prune test data between pilots.
 
+### 10.5 Performance and Capacity Notes
+Designed for a single-location bakery with tens to a few hundred daily transactions: target API p95 latency under 300 ms on modest hardware, client bundle (compressed) ~70 KB over the wire for the main JS asset (measured via Vite production build gzip output), and sub-2-second customer lookup with an existing JWT on typical in-store bandwidth. Connection pooling and index coverage on customer/reward history support this load profile.
+
 ## 11. Limitations
 
 The architecture is single-tenant and not horizontally scaled. There is no automated CI/CD or automated test suite; verification is manual. Analytics, customer self-service, email/SMS notifications, and multi-location aggregation are absent. Token revocation and refresh flows are not implemented. Rate limiting and audit logging are minimal. The admin UI assumes a desktop or tablet form factor; full mobile optimization is not complete. Because balances are integer-based, fractional point promotions cannot yet be expressed.
 
 ## 12. Future Enhancements
 
-Priorities include adding CI/CD pipelines (lint/build/test) with environment promotion, introducing a service layer for business rules, implementing automated API and UI tests, supporting multi-location with store scoping, adding caching for reward/catalog reads, and optimizing performance with connection pooling and prepared statements. Security-focused improvements—such as httpOnly cookie-based auth, refresh tokens, and rate limiting—would harden the platform. Additional UX work (inline validation hints, keyboard-friendly navigation for cashiers, printable receipts) would streamline checkout, while anonymized analytics and cohorting could inform targeted promotions without violating privacy constraints.
+Near-term roadmap (prioritized):
+1. Establish CI/CD with lint/build gates and lightweight smoke tests to prevent regressions.
+2. Introduce a service layer with automated API/UI tests to decouple business rules from transport and increase correctness.
+3. Add multi-location awareness (store scoping) and connection pooling to prepare for higher throughput.
+
+Additional improvements include caching for reward/catalog reads, performance optimizations, security hardening (httpOnly cookie auth, refresh tokens, rate limiting), UX refinements (inline validation hints, keyboard-friendly flows, printable receipts), and anonymized analytics/cohorting for targeted promotions without violating privacy constraints.
 
 ## 13. Engineering Reflection
 

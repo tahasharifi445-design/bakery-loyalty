@@ -1,3 +1,8 @@
+# Final Technical Capstone Report  
+**James Bakery Digital Loyalty System**
+
+> Reading guide: Sections 1–5 set context and requirements, 6–8 analyze and design, 9–12 cover validation and operations, 13–15 reflect and conclude, and Section 16 provides evidence mapped directly to repository artifacts and command outputs.
+
 ## 1. Executive Summary
 
 The James Bakery Digital Loyalty System is a full-stack web application that digitizes stamp-card style rewards for a single-store bakery. The backend is an Express (TypeScript) API backed by PostgreSQL and Sequelize migrations; the frontend is a React + Vite SPA that authenticates staff with PIN-based JWTs and provides point-of-sale friendly workflows for customer lookup, purchase capture, reward redemption, and limited admin controls. The problem addressed is the fragility and opacity of manual loyalty tracking—paper cards are often lost, fraud-prone, and provide no analytics. The team applied a lightweight Agile cadence focused on short increments mapped to clear epics (authentication, earning, redemption, administration, and UI polish). The final outcome is a deployable monolithic application with database migrations, seed data, and a production build for the client, delivering a functional minimum viable product that aligns to the repository’s actual code paths and database schema.
@@ -361,6 +366,8 @@ Seed defaults (admin, rewards, earn rate): `yarn db:seed`. Undo seeds: `yarn db:
 The James Bakery Digital Loyalty System replaces fragile manual tracking with a secure, consistent digital workflow grounded in the repository’s actual Express API, Sequelize schema, and React client. Objectives—authenticated staff access, customer management, configurable earning, reward redemption, and admin controls—are met through the implemented endpoints and UI screens. While the solution is intentionally lean and monolithic, it provides a solid foundation for future hardening, automation, and expansion. This final capstone report documents the system as built, aligns with the codebase and database artifacts, and highlights the path toward production maturity. With incremental investment in testing, observability, and CI/CD, the bakery can evolve this MVP into a long-lived asset that scales with customer loyalty ambitions without discarding the current codebase.
 
 ## 16. Evidence of Alignment with Repository (Appendix)
+
+This appendix grounds the narrative claims in concrete repository artifacts, filenames, and executed commands to ensure verifiability.
 
 ### Key File Paths and Snippets
 - Routes (back end):

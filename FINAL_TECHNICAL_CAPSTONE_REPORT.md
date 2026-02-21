@@ -363,6 +363,17 @@ Seed defaults (admin, rewards, earn rate): `yarn db:seed`. Undo seeds: `yarn db:
 - Token storage in `localStorage` is susceptible to XSS if the host page is compromised; deploy with strict CSP and HTTPS.
 - Multi-location support is absent; all operations assume a single store.
 
+### 14.9 UI Workflow Walkthrough (End-to-End User Journey)
+1. **Login**: Staff arrives at the login screen, enters name + PIN, and receives a JWT; AuthContext persists the token.
+2. **Landing/Home**: HomeScreen greets the user, shows role and ID, and offers navigation to Customer Lookup or Admin (if role=admin).
+3. **Customer Lookup/Create**: On CustomerLookupPage, staff enters a phone number.  
+   - If found: CustomerSummaryCard displays balance with actions to Purchase or Redeem.  
+   - If not found: CreateCustomerModal prompts for optional name, creates the record, and returns to the summary view.
+4. **Purchase Flow**: From the summary card, staff opens PurchasePage, enters purchase amount, and submits. The API awards points per earn rate, updates balance, and confirms new balance.
+5. **Redemption Flow**: From the summary card, staff opens RedemptionPage, which lists active rewards; selecting a reward attempts redemption, deducts points if sufficient, and shows the updated balance (or an insufficient-points message).
+6. **Admin Controls (admins only)**: AdminDashboardPage provides panels to adjust earn rate (ConfigPanel), manage rewards (create/update/toggle active), and activate/deactivate staff accounts (with self-deactivate guard).
+7. **Logout**: From HomeScreen, staff can log out, clearing token and returning to the login screen.
+
 ## 15. Conclusion
 
 The James Bakery Digital Loyalty System replaces fragile manual tracking with a secure, consistent digital workflow grounded in the repository’s actual Express API, Sequelize schema, and React client. Objectives—authenticated staff access, customer management, configurable earning, reward redemption, and admin controls—are met through the implemented endpoints and UI screens. While the solution is intentionally lean and monolithic, it provides a solid foundation for future hardening, automation, and expansion. This final capstone report documents the system as built, aligns with the codebase and database artifacts, and highlights the path toward production maturity. With incremental investment in testing, observability, and CI/CD, the bakery can evolve this MVP into a long-lived asset that scales with customer loyalty ambitions without discarding the current codebase.

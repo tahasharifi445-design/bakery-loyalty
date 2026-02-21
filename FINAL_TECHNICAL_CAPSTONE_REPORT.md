@@ -7,7 +7,7 @@
 
 The James Bakery Digital Loyalty System is a full-stack web application that digitizes stamp-card style rewards for a single-store bakery. The backend is an Express (TypeScript) API backed by PostgreSQL and Sequelize migrations; the frontend is a React + Vite SPA that authenticates staff with PIN-based JWTs and provides point-of-sale friendly workflows for customer lookup, purchase capture, reward redemption, and limited admin controls. The problem addressed is the fragility and opacity of manual loyalty tracking—paper cards are often lost, fraud-prone, and provide no analytics. The team applied a lightweight Agile cadence focused on short increments mapped to clear epics (authentication, earning, redemption, administration, and UI polish). The final outcome is a deployable monolithic application with database migrations, seed data, and a production build for the client, delivering a functional minimum viable product that aligns to the repository’s actual code paths and database schema.
 
-Beyond functional delivery, the project emphasizes operational simplicity: a single Dockerized Postgres instance, environment-driven configuration, and minimized dependencies to respect the bakery’s resource constraints. The system can be stood up with a handful of commands, allowing staff to experience measurable improvements—faster lookups, consistent point balances, and auditable reward usage—without additional hardware. The report that follows captures not only what was built but also the rationale for design choices, observed trade-offs, and a roadmap for graduating the MVP into a production-grade service.
+Beyond functional delivery, the project favors operational simplicity—single Dockerized Postgres, environment-driven configuration, and minimized dependencies—so the system can be stood up with a handful of commands. Staff gain measurable improvements—faster lookups, consistent point balances, and auditable reward usage—without additional hardware. The report that follows is structured to lead stakeholders from context to evidence-backed deployment steps and future evolution.
 
 Pilot-ready targets include sub-2-second customer lookup (with a valid JWT already established) on a typical POS connection, end-to-end purchase capture in under five clicks, and auditable point movements via transaction/redemption records that capture staff IDs.
 
@@ -113,7 +113,7 @@ Each requirement maps to implemented routes: authentication (`/v1/auth/login`, `
 | Reward listing and redemption | `GET /v1/rewards`, `POST /v1/redemptions` | RedemptionPage, RewardList/RewardCard | `backend/src/routes/redemption.routes.ts`, `backend/src/models/reward.model.ts` | `frontend/src/services/redemption.service.ts`, `frontend/src/pages/RedemptionPage.tsx` |
 | Admin configuration and control | `GET/PUT /v1/admin/config`, `POST/PUT/PATCH /v1/admin/rewards*`, `GET/PATCH /v1/admin/staff*` | AdminDashboardPage (ConfigPanel, RewardsAdminTable, StaffAdminTable) | `backend/src/routes/admin.config.routes.ts`, `backend/src/routes/admin.rewards.routes.ts`, `backend/src/routes/admin.staff.routes.ts` | `frontend/src/services/admin.service.ts`, `frontend/src/components/admin/*.tsx` |
 
-All referenced files and components are present in the repository as of this commit.
+All referenced files and components are present in the repository as of this commit, making each requirement directly verifiable against both API and UI artifacts.
 
 ## 6. System Analysis
 
@@ -295,6 +295,8 @@ Designed for a single-location bakery with tens to a few hundred daily transacti
    - `yarn install --mode=update-lockfile`
    - `yarn dev` (dev mode on 5173) or `yarn build` then serve `dist/`.
 4. Expected results: Postgres container healthy; migrations applied; seeds present (Admin user, Free Bread, $5 Off, earn_rate=1.0); backend reachable on 4000; frontend reachable on 5173 and able to log in, look up/create customers, record purchases, and attempt redemptions.
+
+These operational steps pair commands with expected outcomes so operators can trace readiness from infrastructure to application behavior without guessing.
 
 ## 11. Limitations
 

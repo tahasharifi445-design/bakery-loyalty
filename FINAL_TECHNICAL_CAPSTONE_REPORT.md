@@ -67,7 +67,7 @@ Given evolving usability feedback from counter staff, Agile allowed rapid refine
 ### 4.4 GitHub Workflow
 Branching centered on feature branches merged into the main line via pull requests. Work items were derived from epics, keeping commits small. The repository does not include CI/CD; builds were executed locally (`yarn build` in backend and frontend) to verify correctness.
 
-Issues and PRs were scoped to single concerns (e.g., “add redemption flow”) to reduce merge conflicts and to keep code reviews focused on a narrow change set. The absence of automated checks increased the importance of human review and manual regression passes before merging. Evidence: branch `copilot/generate-final-capstone-report` with incremental commits (`e80249d`, `9ab258e`) and yarn-based build/test logs in this report.
+Issues and PRs were scoped to single concerns (e.g., “add redemption flow”) to reduce merge conflicts and to keep code reviews focused on a narrow change set. The absence of automated checks increased the importance of human review and manual regression passes before merging. Evidence: branch `master` with incremental commits (`e80249d`, `9ab258e`) and yarn-based build/test logs in this report.
 
 ### 4.5 Risk Mitigation
 Transactional safeguards were applied to earning and redemption, input validation was enforced on all routes, and JWT expiration defaults to 12h with required secrets. Migrations include rollback scripts to minimize deployment risk.

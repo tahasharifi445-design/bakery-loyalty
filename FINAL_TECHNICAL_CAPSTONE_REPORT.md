@@ -458,6 +458,6 @@ This appendix grounds the narrative claims in concrete repository artifacts, fil
 - Redemption insufficient points for $5 Off reward → 409 `Insufficient points`.
 
 ### Git/Workflow Evidence
-- Branch: `copilot/generate-final-capstone-report`.
+- Branch: `master`.
 - Commits: `e80249d` (initial report), `9ab258e` (polish and evidence).
 - Build/test commands captured above; no CI pipeline present.
